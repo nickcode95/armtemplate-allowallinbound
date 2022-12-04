@@ -70,25 +70,8 @@
         },
         "enableHotpatching": {
             "type": "Bool"
-        },
-        "autoShutdownStatus": {
-            "type": "String"
-        },
-        "autoShutdownTime": {
-            "type": "String"
-        },
-        "autoShutdownTimeZone": {
-            "type": "String"
-        },
-        "autoShutdownNotificationStatus": {
-            "type": "String"
-        },
-        "autoShutdownNotificationLocale": {
-            "type": "String"
-        },
-        "autoShutdownNotificationEmail": {
-            "type": "String"
         }
+
     },
     "variables": {
         "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
@@ -217,30 +200,6 @@
                     "bootDiagnostics": {
                         "enabled": true
                     }
-                }
-            }
-        },
-        {
-            "type": "Microsoft.DevTestLab/schedules",
-            "apiVersion": "2018-09-15",
-            "name": "[concat('shutdown-computevm-', parameters('virtualMachineName'))]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
-            ],
-            "properties": {
-                "status": "[parameters('autoShutdownStatus')]",
-                "taskType": "ComputeVmShutdownTask",
-                "dailyRecurrence": {
-                    "time": "[parameters('autoShutdownTime')]"
-                },
-                "timeZoneId": "[parameters('autoShutdownTimeZone')]",
-                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]",
-                "notificationSettings": {
-                    "status": "[parameters('autoShutdownNotificationStatus')]",
-                    "notificationLocale": "[parameters('autoShutdownNotificationLocale')]",
-                    "timeInMinutes": "30",
-                    "emailRecipient": "[parameters('autoShutdownNotificationEmail')]"
                 }
             }
         }
